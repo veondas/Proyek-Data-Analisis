@@ -19,5 +19,5 @@ streamlit run dashboard/main.py
 ```
 ## url streamlit cloud
 ```
-https://parveen-proyek-data-science.streamlit.app/
+https://parveen-proyek-akhir.streamlit.app/
 ```
