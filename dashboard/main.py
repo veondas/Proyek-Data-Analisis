@@ -8,7 +8,7 @@ from babel.numbers import format_currency
 sns.set(style='dark')
 
 # Load data
-file_path = 'DataBaru.csv'
+file_path = 'dashboard/DataBaru.csv'
 day_df = pd.read_csv(file_path)
 
 # Hitung total peminjaman dan jumlah hari berdasarkan kategori libur
