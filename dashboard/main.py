@@ -8,23 +8,8 @@ from babel.numbers import format_currency
 sns.set(style='dark')
 
 # Load data
-file_path = 'dashboard/DataBaru.csv'
+file_path = 'DataBaru.csv'
 day_df = pd.read_csv(file_path)
-
-# Hitung total peminjaman dan jumlah hari berdasarkan kategori libur
-Totpmjmn = day_df.groupby('holiday')['cnt'].sum()
-Thari = day_df['holiday'].value_counts()
-Mean = Totpmjmn / Thari
-
-data = pd.DataFrame({
-    "Kategori": ["Hari Kerja", "Hari Libur"],
-    "Total Peminjaman": Totpmjmn.values,
-    "Total Hari": Thari.values,
-    "Rata-rata Peminjaman per Hari": Mean.values
-})
-
-# Menghitung statistik peminjaman berdasarkan musim
-stats = day_df.groupby("season")["cnt"].agg(total="sum", jmlhari="count", mean="mean").round(2)
 
 # Streamlit Dashboard
 st.title(':sparkles: Proyek Analisis Data: Bike Sharing :sparkles:')
@@ -35,16 +20,22 @@ st.write(
     ID Dicoding : MC325D5X1356
     """
 )
-st.title("Dashboard Peminjaman Sepeda")
 
 
 # Visualisasi 1: Hari Kerja vs Hari Libur
-st.subheader("Perbandingan Peminjaman Sepeda: Hari Kerja vs Hari Libur")
-fig, ax = plt.subplots(figsize=(8, 5))
+st.subheader("Perbandingan Peminjaman Sepeda: Hari Libur vs Hari Kerja")
+Totpmjmn = day_df.groupby('holiday')["cnt"].sum()
+Thari = day_df["holiday"].value_counts()
+Mean = Totpmjmn / Thari
+data = pd.DataFrame({
+    "Kategori": ["Hari Kerja", "Hari Libur"],
+    "Rata-rata Peminjaman per Hari": Mean.values
+})
+fig, ax = plt.subplots()
 sns.barplot(y=data["Kategori"], x=data["Rata-rata Peminjaman per Hari"], palette=["blue", "hotpink"], ax=ax)
 ax.set_xlabel("Rata-rata Peminjaman per Hari")
 ax.set_ylabel("Kategori")
-ax.set_title("Perbandingan Peminjaman Sepeda: Hari Libur vs Hari Kerja")
+ax.set_title("Perbandingan Peminjaman Sepeda")
 st.pyplot(fig)
 
 # Menampilkan Insight
@@ -53,6 +44,8 @@ st.info("Data terbanyak ada pada Hari Libur")
 
 # Visualisasi 2: Peminjaman Berdasarkan Musim
 st.subheader("Rata-rata Peminjaman Sepeda Berdasarkan Musim")
+stats = day_df.groupby("season")["cnt"].agg(total="sum",
+                                            jmlhari="count", mean="mean").round(2)
 fig, ax = plt.subplots(figsize=(9, 5))
 sns.barplot(x=stats.index.astype(str), y=stats["mean"], palette="winter", ax=ax)
 ax.set_xlabel("Musim")
@@ -64,6 +57,15 @@ st.pyplot(fig)
 # Menampilkan Insight
 st.subheader("Insight")
 st.info("Data terbanyak ada pada musim gugur")
+
+# Visualisasi 3: Distribusi Berdasarkan Musim
+st.subheader("Distribusi Data Berdasarkan Musim")
+fig, ax = plt.subplots()
+sns.countplot(x=day_df["season"], palette=["pink","yellow","orange","lightblue"], ax=ax)
+ax.set_xlabel("Musim")
+ax.set_ylabel("Jumlah")
+ax.set_title("Distribusi Data Berdasarkan Musim")
+st.pyplot(fig)
 
 # Menampilkan Conclusion
 st.markdown("### 📌 Conclusion")
