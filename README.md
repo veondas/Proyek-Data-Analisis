@@ -54,8 +54,8 @@ Dashboard dideploy menggunakan **Streamlit Community Cloud**.
 ### **Deploy dengan Streamlit Community Cloud**
 1. **Upload proyek ke GitHub**.
 2. **Buka** [Streamlit Community Cloud](https://share.streamlit.io/).
-3. **Hubungkan dengan repository GitHub**.
-4. **Pilih file `dashboard\main.py` sebagai entry point**.
+3. **copy and paste link repository GitHub**.
+4. **Pilih file `dashboard/main.py` sebagai entry point**.
 5. **Klik deploy**.
 
 Setelah deployment berhasil, link dashboard dapat disalin dan dibagikan.
