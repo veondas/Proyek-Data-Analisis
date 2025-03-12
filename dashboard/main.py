@@ -8,8 +8,7 @@ from babel.numbers import format_currency
 sns.set(style='dark')
 
 # Load data
-file_path = 'DataBaru.csv'
-day_df = pd.read_csv(file_path)
+day_df = pd.read_csv("DataBaru.csv")
 
 # Streamlit Dashboard
 st.title(':sparkles: Proyek Analisis Data: Bike Sharing :sparkles:')
