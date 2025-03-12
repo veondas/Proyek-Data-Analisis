@@ -10,10 +10,9 @@ Proyek ini bertujuan untuk menganalisis dataset peminjaman sepeda (Bike Sharing 
 |   |-- DataBaru.csv         # Dataset peminjaman sepeda
 |
 |-- dataset/
-|   |-- README.md            # Dokumentasi dataset
 |   |-- day.csv              # Dataset dari tabel day
 |   |-- hour.csv             # Dataset dari tabel hour
-|   |-- README.md            # Dokumentasi dataset
+|   |-- Readme.md            # Dokumentasi dataset
 |
 |-- Proyek_Analisis_Data1.ipynb           # Analisis eksploratif dalam Jupyter Notebook
 |-- README.md                # Dokumentasi proyek
@@ -26,7 +25,7 @@ Proyek ini bertujuan untuk menganalisis dataset peminjaman sepeda (Bike Sharing 
 Jalankan perintah berikut di terminal:
 ```bash
 git clone https://github.com/aauliadwi/proyek-analysis-data.git https://github.com/veondas/Proyek-Data-Analisis.git
-cd Proyek-Analysis-Data
+cd Proyek-Data-Analisis
 ```
 ### **2. Setup Environment - Anaconda**
 ```bash
@@ -36,8 +35,8 @@ pip install -r requirements.txt
 ```
 ### **3. Setup Environment - Shell/Terminal**
 ```bash
-mkdir Proyek_Analisis_Data
-cd Proyek_Analisis_Data
+mkdir Proyek-Data-Analisis
+cd Proyek-Data-Analisis
 pipenv install
 pipenv shell
 pip install -r requirements.txt
