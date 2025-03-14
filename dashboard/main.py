@@ -20,6 +20,16 @@ st.write(
     """
 )
 
+# Pilihan Dropdown untuk Memilih Musim
+season_options = {1: "Musim Semi", 2: "Musim Panas", 3: "Musim Gugur", 4: "Musim Dingin"}
+selected_season = st.selectbox("Pilih Musim", options=list(season_options.keys()), format_func=lambda x: season_options[x])
+
+# Filter Data Berdasarkan Musim
+filtered_data = day_df[day_df['season'] == selected_season]
+
+# Slider untuk Rentang Hari
+start_day, end_day = st.slider("Pilih Rentang Hari", 0, len(filtered_data) - 1, (0, len(filtered_data) - 1))
+filtered_data = filtered_data.iloc[start_day:end_day + 1]
 
 # Visualisasi 1: Hari Kerja vs Hari Libur
 st.subheader("Perbandingan Peminjaman Sepeda: Hari Libur vs Hari Kerja")
@@ -30,46 +40,38 @@ data = pd.DataFrame({
     "Kategori": ["Hari Kerja", "Hari Libur"],
     "Rata-rata Peminjaman per Hari": Mean.values
 })
-fig, ax = plt.subplots()
-sns.barplot(y=data["Kategori"], x=data["Rata-rata Peminjaman per Hari"], palette=["blue", "hotpink"], ax=ax)
-ax.set_xlabel("Rata-rata Peminjaman per Hari")
-ax.set_ylabel("Kategori")
-ax.set_title("Perbandingan Peminjaman Sepeda")
-st.pyplot(fig)
+fig = px.bar(data, x="Kategori", y="Rata-rata Peminjaman per Hari", color="Kategori", title="Perbandingan Peminjaman Sepeda")
+st.plotly_chart(fig)
 
-# Menampilkan Insight
-st.subheader("Insight")
-st.info("Data terbanyak ada pada Hari Libur")
+# Toggle untuk Menampilkan Insight
+if st.toggle("Tampilkan Insight Hari Libur vs Hari Kerja"):
+    st.subheader("Insight")
+    st.info("Data terbanyak ada pada Hari Libur")
 
 # Visualisasi 2: Peminjaman Berdasarkan Musim
 st.subheader("Rata-rata Peminjaman Sepeda Berdasarkan Musim")
-stats = day_df.groupby("season")["cnt"].agg(total="sum",
-                                            jmlhari="count", mean="mean").round(2)
-fig, ax = plt.subplots(figsize=(9, 5))
-sns.barplot(x=stats.index.astype(str), y=stats["mean"], palette="winter", ax=ax)
-ax.set_xlabel("Musim")
-ax.set_ylabel("Rata-rata Peminjaman per Hari")
-ax.set_title("Rata-rata Peminjaman Sepeda Berdasarkan Musim")
-plt.xticks(rotation=30)
-st.pyplot(fig)
+stats = day_df.groupby("season")["cnt"].agg(total="sum", jmlhari="count", mean="mean").round(2)
+fig = px.bar(stats, x=stats.index.astype(str), y="mean", title="Rata-rata Peminjaman Sepeda Berdasarkan Musim", labels={'x': 'Musim', 'mean': 'Rata-rata Peminjaman per Hari'}, color=stats.index.astype(str))
+st.plotly_chart(fig)
 
-# Menampilkan Insight
-st.subheader("Insight")
-st.info("Data terbanyak ada pada musim gugur")
+# Toggle untuk Menampilkan Insight Musim
+if st.toggle("Tampilkan Insight Musim"):
+    st.subheader("Insight")
+    st.info("Data terbanyak ada pada musim gugur")
 
 # Visualisasi 3: Distribusi Berdasarkan Musim
 st.subheader("Distribusi Data Berdasarkan Musim")
-fig, ax = plt.subplots()
-sns.countplot(x=day_df["season"], palette=["pink","yellow","orange","lightblue"], ax=ax)
-ax.set_xlabel("Musim")
-ax.set_ylabel("Jumlah")
-ax.set_title("Distribusi Data Berdasarkan Musim")
-st.pyplot(fig)
+fig = px.histogram(day_df, x="season", color="season", title="Distribusi Data Berdasarkan Musim")
+st.plotly_chart(fig)
 
 # Menampilkan Conclusion
 st.markdown("### 📌 Conclusion")
-st.markdown("""
-- **Pertanyaan 1**: Peminjaman sepeda cenderung lebih tinggi pada hari libur dibandingkan dengan hari kerja, yang mengindikasikan bahwa sepeda lebih sering dimanfaatkan untuk kegiatan rekreasi saat liburan. Walaupun jumlah hari kerja lebih banyak, rata-rata penggunaan harian tetap lebih besar pada hari libur. Kondisi ini dapat dimanfaatkan oleh penyedia layanan untuk mengoptimalkan operasional, misalnya dengan menambah jumlah sepeda atau memberikan penawaran khusus pada akhir pekan dan hari libur.
-  
-- **Pertanyaan 2**: Peminjaman sepeda bervariasi menurut musim, dengan angka tertinggi pada musim gugur dan panas, kemungkinan karena cuaca yang lebih mendukung aktivitas luar ruangan. Musim dingin masih memiliki peminjaman yang cukup tinggi, meskipun suhu rendah bisa menjadi tantangan. Sementara itu, musim semi mencatat peminjaman terendah, mungkin akibat cuaca yang tidak stabil. Pola ini dapat dimanfaatkan untuk strategi operasional, seperti meningkatkan promosi atau menyesuaikan ketersediaan sepeda sesuai musim.
-""")
+st.markdown(
+    """
+    - **Pertanyaan 1**: Peminjaman sepeda cenderung lebih tinggi pada hari libur dibandingkan dengan hari kerja, yang mengindikasikan bahwa sepeda lebih sering dimanfaatkan untuk kegiatan rekreasi saat liburan.
+      Walaupun jumlah hari kerja lebih banyak, rata-rata penggunaan harian tetap lebih besar pada hari libur. Kondisi ini dapat dimanfaatkan oleh penyedia layanan untuk mengoptimalkan operasional.
+      
+    - **Pertanyaan 2**: Peminjaman sepeda bervariasi menurut musim, dengan angka tertinggi pada musim gugur dan panas, kemungkinan karena cuaca yang lebih mendukung aktivitas luar ruangan.
+      Musim dingin masih memiliki peminjaman yang cukup tinggi, meskipun suhu rendah bisa menjadi tantangan. Sementara itu, musim semi mencatat peminjaman terendah, mungkin akibat cuaca yang tidak stabil.
+    """
+)
