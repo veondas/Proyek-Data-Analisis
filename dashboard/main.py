@@ -20,7 +20,6 @@ st.write(
     """
 )
 
-
 # Visualisasi 1: Hari Kerja vs Hari Libur
 st.subheader("Perbandingan Peminjaman Sepeda: Hari Libur vs Hari Kerja")
 Totpmjmn = day_df.groupby('holiday')["cnt"].sum()
@@ -53,11 +52,6 @@ if st.toggle("Tampilkan Insight Musim"):
 st.subheader("Distribusi Data Berdasarkan Musim")
 fig = px.histogram(day_df, x="season", color="season", title="Distribusi Data Berdasarkan Musim")
 st.plotly_chart(fig)
-
-# Slider untuk Rentang Hari
-if not filtered_data.empty:
-    start_day, end_day = st.slider("Pilih Rentang Hari", 0, len(filtered_data) - 1, (0, len(filtered_data) - 1))
-    filtered_data = filtered_data.iloc[start_day:end_day + 1]
 
 
 # Menampilkan Conclusion
