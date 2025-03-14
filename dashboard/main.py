@@ -20,18 +20,6 @@ st.write(
     """
 )
 
-# Pilihan Dropdown untuk Memilih Musim
-season_options = {1: "Musim Semi", 2: "Musim Panas", 3: "Musim Gugur", 4: "Musim Dingin"}
-selected_season = st.selectbox("Pilih Musim", options=list(season_options.keys()), format_func=lambda x: season_options[x])
-
-# Filter Data Berdasarkan Musim
-filtered_data = day_df[day_df['season'] == selected_season]
-
-# Slider untuk Rentang Hari
-if not filtered_data.empty:
-    start_day, end_day = st.slider("Pilih Rentang Hari", 0, len(filtered_data) - 1, (0, len(filtered_data) - 1))
-    filtered_data = filtered_data.iloc[start_day:end_day + 1]
-
 
 # Visualisasi 1: Hari Kerja vs Hari Libur
 st.subheader("Perbandingan Peminjaman Sepeda: Hari Libur vs Hari Kerja")
